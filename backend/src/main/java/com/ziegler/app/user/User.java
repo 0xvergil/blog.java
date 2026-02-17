@@ -15,8 +15,9 @@ public class User {
     public User() {
 
     }
-    public User(String username, String hashedPassword, Role role) {
+    public User(String username, String email, String hashedPassword, Role role) {
         this.username = username;
+        this.email = email;
         this.hashedPassword = hashedPassword;
         this.role = role;
         this.enabled = true;
@@ -34,5 +35,8 @@ public class User {
     }
     public boolean isEnabled() {
         return enabled;
+    }
+    public String getPassword() {
+        return hashedPassword;
     }
 }
