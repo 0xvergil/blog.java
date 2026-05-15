@@ -2,10 +2,15 @@ package com.ziegler.app.posts;
 
 import com.ziegler.app.user.User;
 import com.ziegler.app.user.UserRepository;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -20,45 +25,75 @@ public class PostController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping
-    public ResponseEntity<Post> createPost(
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostDTO> createPost(
             Authentication authentication,
-            @RequestBody PostRequest request
+            @RequestParam String description,
+            @RequestParam(required = false) MultipartFile file
     ) {
-        System.out.println("hell");
-
-        // Get username from JWT
         String username = authentication.getName();
 
-        // Load real User entity from database
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Create post using real user ID
-        Post post = postService.createPost(
-                user.getId(),
-                request.getDescription(),
-                request.getMediaUrl()
-        );
+        String mediaUrl = null;
 
-        return ResponseEntity.ok(post);
+        try {
+            if (file != null && !file.isEmpty()) {
+                String filename = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                Path uploadPath = Paths.get("uploads/" + filename);
+                Files.createDirectories(uploadPath.getParent());
+                Files.write(uploadPath, file.getBytes());
+                mediaUrl = "/uploads/" + filename;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to save file", e);
+        }
+
+        Post post = postService.createPost(user.getId(), description, mediaUrl);
+        return ResponseEntity.ok(new PostDTO(post));
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<PostDTO>> getMyPosts(Authentication authentication) {
+        String username = authentication.getName();
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<PostDTO> posts = postService.getPostsByUser(user.getId())
+                .stream()
+                .map(PostDTO::new)
+                .toList();
+
+        return ResponseEntity.ok(posts);
+    }
+
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Post>> getPosts(@PathVariable Long userId) {
-        List<Post> posts = postService.getPostsByUser(userId);
+    public ResponseEntity<List<PostDTO>> getPosts(@PathVariable Long userId) {
+        List<PostDTO> posts = postService.getPostsByUser(userId)
+                .stream()
+                .map(PostDTO::new)
+                .toList();
+
         return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/debug")
     public String debug(Authentication authentication) {
-        System.out.println("yea B");
         if (authentication == null) {
             return "Authentication is NULL";
         }
         return "User: " + authentication.getName();
     }
-    @PostMapping("/test")
-    public String testPost() {
-        return "POST WORKS";
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(
+            @PathVariable Long postId,
+            Authentication authentication
+    ) {
+        String username = authentication.getName();
+        postService.deletePost(postId, username);
+        return ResponseEntity.noContent().build();
     }
 }

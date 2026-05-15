@@ -2,6 +2,7 @@ package com.ziegler.app.posts;
 
 import com.ziegler.app.user.User;
 import com.ziegler.app.user.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,5 +30,18 @@ public class PostService {
         User author = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return postRepository.findAllByAuthor(author);
+    }
+
+    @Transactional
+    public void deletePost(Long postId, String username) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        // Use getAuthor() instead of getUser()
+        if (!post.getAuthor().getUsername().equals(username)) {
+            throw new RuntimeException("You cannot delete this post");
+        }
+
+        postRepository.delete(post);
     }
 }
