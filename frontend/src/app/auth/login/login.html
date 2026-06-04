@@ -1,0 +1,14 @@
+<div style="max-width: 300px; margin: 100px auto; font-family: monospace;">
+  <h2>01Blog — Login</h2>
+  <hr>
+
+  <label>Username</label><br>
+  <input type="text" [(ngModel)]="username" style="width: 100%; margin-bottom: 10px;"><br>
+
+  <label>Password</label><br>
+  <input type="password" [(ngModel)]="password" style="width: 100%; margin-bottom: 10px;"><br>
+
+  <button (click)="login()">Login</button>
+
+  <p>No account? <a routerLink="/register">Register</a></p>
+</div>

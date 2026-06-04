@@ -1,0 +1,20 @@
+<div style="max-width: 300px; margin: 100px auto; font-family: monospace;">
+  <h2>01Blog — Register</h2>
+  <hr>
+
+  <label>Username</label><br>
+  <input type="text" [(ngModel)]="username" style="width: 100%; margin-bottom: 10px;"><br>
+
+  <label>Password</label><br>
+  <input type="password" [(ngModel)]="password" style="width: 100%; margin-bottom: 10px;"><br>
+
+  <label>Confirm Password</label><br>
+  <input type="password" [(ngModel)]="confirmPassword" style="width: 100%; margin-bottom: 10px;"><br>
+
+  <button (click)="register()">Register</button>
+
+  <p style="color: red;" *ngIf="error">{{ error }}</p>
+  <p style="color: green;" *ngIf="success">Account created! <a routerLink="/login">Login</a></p>
+
+  <p>Already have an account? <a routerLink="/login">Login</a></p>
+</div>
