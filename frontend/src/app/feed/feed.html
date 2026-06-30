@@ -2,7 +2,7 @@
 
 @for (post of posts; track post.id) {
   <p>{{ post.description }}</p>
-  <p>{{ post.author.username }}</p>
+  <a [routerLink]="['/profile', post.author.id]" style="color: black; font-weight: bold; text-decoration: none;">{{ post.author.username }}</a>
   <!-- <p>{{ formatDate(post.createdAt) }}</p> -->
   @if (post.mediaUrl) {
     <img [src]="'http://localhost:8080' + post.mediaUrl" style="max-width: 100%;">

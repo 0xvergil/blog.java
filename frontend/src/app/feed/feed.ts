@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PostService } from '../posts/post';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-feed',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './feed.html',
   styleUrl: './feed.css',
 })

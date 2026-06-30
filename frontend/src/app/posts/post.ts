@@ -21,6 +21,9 @@ export class PostService {
   getMyPosts() {
     return this.http.get<any[]>(`${this.baseUrl}/me`, { headers: this.getHeaders() });
   }
+  getPostsByUser(userId: number) {
+    return this.http.get<any[]>(`${this.baseUrl}/${userId}`, { headers: this.getHeaders() });
+  }
 
   createPost(description: string, file?: File) {
     const formData = new FormData();

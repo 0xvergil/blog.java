@@ -1,0 +1,19 @@
+<div style="max-width: 600px; margin: 40px auto; font-family: monospace;">
+  <h2>User Profile</h2>
+  <hr>
+
+  @for (post of posts; track post.id) {
+    <div style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+      <strong>{{ post.author.username }}</strong>
+      <span style="color: grey; font-size: 0.85em;"> — {{ formatDate(post.createdAt) }}</span>
+      <p>{{ post.description }}</p>
+      @if (post.mediaUrl) {
+        <img [src]="'http://localhost:8080' + post.mediaUrl" style="max-width: 100%;">
+      }
+    </div>
+  }
+
+  @if (posts.length === 0) {
+    <p>No posts yet.</p>
+  }
+</div>
