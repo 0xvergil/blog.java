@@ -1,1 +1,13 @@
-<p>feed works!</p>
+<p>Posts count: {{ posts.length }}</p>
+
+@for (post of posts; track post.id) {
+  <p>{{ post.description }}</p>
+  <p>{{ post.author.username }}</p>
+  <!-- <p>{{ formatDate(post.createdAt) }}</p> -->
+  @if (post.mediaUrl) {
+    <img [src]="'http://localhost:8080' + post.mediaUrl" style="max-width: 100%;">
+  }
+}
+
+<a href="/create-post" style="color:gray">+ New Post</a>
+<hr>

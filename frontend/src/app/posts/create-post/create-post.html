@@ -1,0 +1,14 @@
+<div style="max-width: 600px; margin: 40px auto; font-family: monospace;">
+  <h2>New Post</h2>
+  <hr>
+
+  <label>Description</label><br>
+  <textarea [(ngModel)]="description" rows="4" style="width: 100%; margin-bottom: 10px;"></textarea><br>
+
+  <label>Media (optional)</label><br>
+  <input type="file" (change)="onFileSelected($event)" accept="image/*,video/*"><br><br>
+
+  <button (click)="submit()">Post</button>
+  <p style="color: red;" *ngIf="error">{{ error }}</p>
+  <p style="color: green;" *ngIf="success">Post created! <a routerLink="/feed">Back to feed</a></p>
+</div>

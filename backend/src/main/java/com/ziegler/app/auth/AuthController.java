@@ -18,15 +18,13 @@ public class AuthController {
     public User register(@RequestBody RegisterRequest request) {
         return userService.register(
                 request.getUsername(),
-                request.getEmail(),
-                request.getPassword()
-        );
+                request.getPassword());
     }
+
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest request) {
         return userService.login(
                 request.getUsername(),
-                request.getPassword()
-        );
+                request.getPassword());
     }
 }

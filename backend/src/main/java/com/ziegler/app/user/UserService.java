@@ -23,24 +23,18 @@ public class UserService implements UserDetailsService {
         this.jwtService = jwtService;
     }
 
-    public User register(String username, String email, String rawPassword) {
+    public User register(String username, String rawPassword) {
 
         if (userRepository.findByUsername(username).isPresent()) {
             throw new RuntimeException("Username already taken");
-        }
-
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("Email already taken");
         }
 
         String hashedPassword = passwordEncoder.encode(rawPassword);
 
         User user = new User(
                 username,
-                email,
                 hashedPassword,
-                Role.USER
-        );
+                Role.USER);
 
         return userRepository.save(user);
     }
@@ -62,13 +56,11 @@ public class UserService implements UserDetailsService {
             throws UsernameNotFoundException {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
-        );
+                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
     }
 }
