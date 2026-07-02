@@ -1,21 +1,27 @@
 package com.ziegler.app.posts;
 
-import com.ziegler.app.user.User;
-import com.ziegler.app.user.UserRepository;
-import jakarta.transaction.Transactional;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.ziegler.app.notifications.NotificationService;
+import com.ziegler.app.user.User;
+import com.ziegler.app.user.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository,
+            NotificationService notificationService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
     public Post createPost(Long userId, String description, String mediaUrl) {
@@ -23,7 +29,9 @@ public class PostService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Post post = new Post(description, mediaUrl, author);
-        return postRepository.save(post);
+        Post saved = postRepository.save(post);
+        notificationService.notifyFollowers(saved);
+        return saved;
     }
 
     public List<Post> getPostsByUser(Long userId) {
@@ -37,11 +45,15 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
-        // Use getAuthor() instead of getUser()
+        // getAuthor() instead of getUser()
         if (!post.getAuthor().getUsername().equals(username)) {
             throw new RuntimeException("You cannot delete this post");
         }
 
         postRepository.delete(post);
+    }
+
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
     }
 }

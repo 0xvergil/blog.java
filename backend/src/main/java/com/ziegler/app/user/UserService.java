@@ -1,6 +1,8 @@
 package com.ziegler.app.user;
 
-import com.ziegler.app.security.JwtService;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.ziegler.app.security.JwtService;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -62,5 +64,9 @@ public class UserService implements UserDetailsService {
                 user.getUsername(),
                 user.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+    }
+
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

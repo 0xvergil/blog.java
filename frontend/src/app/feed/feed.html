@@ -1,13 +1,30 @@
-<p>Posts count: {{ posts.length }}</p>
+<div style="max-width: 600px; margin: 40px auto; font-family: monospace;">
+  <h2>01Blog — Feed</h2>
+  <hr>
+  <a href="/create-post" style="color:gray">+ New Post</a>
+  <hr>
 
-@for (post of posts; track post.id) {
-  <p>{{ post.description }}</p>
-  <a [routerLink]="['/profile', post.author.id]" style="color: black; font-weight: bold; text-decoration: none;">{{ post.author.username }}</a>
-  <!-- <p>{{ formatDate(post.createdAt) }}</p> -->
-  @if (post.mediaUrl) {
-    <img [src]="'http://localhost:8080' + post.mediaUrl" style="max-width: 100%;">
+  @for (post of posts; track post.id) {
+    <div style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+      <a [routerLink]="['/profile', post.author.id]" style="color: black; font-weight: bold; text-decoration: none;">{{ post.author.username }}</a>
+      <p>{{ post.description }}</p>
+      @if (post.mediaUrl) {
+        <img [src]="'http://localhost:8080' + post.mediaUrl" style="max-width: 100%; max-height: 300px; object-fit: contain;">
+      }
+
+      <div style="margin-top: 8px;">
+        <button (click)="toggleLike(post)" style="cursor: pointer;">♥ {{ post.likeCount }}</button>
+      </div>
+
+      <div style="margin-top: 8px;">
+        @for (comment of post.comments; track comment.id) {
+          <div style="margin: 4px 0; font-size: 0.9em;">
+            <strong>{{ comment.user.username }}</strong>: {{ comment.content }}
+          </div>
+        }
+        <input [(ngModel)]="commentInputs[post.id]" placeholder="Add a comment..." style="width: 70%; margin-top: 4px;">
+        <button (click)="addComment(post)" style="cursor: pointer;">Post</button>
+      </div>
+    </div>
   }
-}
-
-<a href="/create-post" style="color:gray">+ New Post</a>
-<hr>
+</div>

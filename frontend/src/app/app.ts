@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 
 @Component({
@@ -10,10 +10,24 @@ import { AuthService } from './auth/auth.service';
 })
 export class App implements OnInit {
   username: string | null = null;
+  userId: string | null = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
-    this.username = this.authService.getUsername();
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.username = this.authService.getUsername();
+        this.userId = this.authService.getSavedUserId();
+      }
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

@@ -23,7 +23,12 @@ export class Login {
     this.authService.login(this.username, this.password).subscribe({
       next: (token) => {
         this.authService.saveToken(token);
-        this.router.navigate(['/feed']);
+        this.authService.getMe().subscribe({
+          next: (user) => {
+            this.authService.saveUserId(user.id);
+            this.router.navigate(['/feed']);
+          },
+        });
       },
       error: () => {
         this.error = 'Invalid username or password';

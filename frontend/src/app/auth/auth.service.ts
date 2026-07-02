@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -45,5 +45,17 @@ export class AuthService {
     if (!token) return null;
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.sub;
+  }
+
+  getMe() {
+    const headers = new HttpHeaders({ Authorization: `Bearer ${this.getToken()}` });
+    return this.http.get<any>('http://localhost:8080/auth/me', { headers });
+  }
+  saveUserId(id: number) {
+    localStorage.setItem('userId', id.toString());
+  }
+
+  getSavedUserId(): string | null {
+    return localStorage.getItem('userId');
   }
 }

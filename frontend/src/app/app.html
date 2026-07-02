@@ -1,6 +1,15 @@
 <nav style="font-family: monospace; padding: 8px 16px; border-bottom: 1px solid #000; display: flex; justify-content: space-between; align-items: center;">
   <a href="/feed" style="text-decoration: none; color: black;"><strong>01Blog</strong></a>
-  <span>{{ username }}</span>
+  @if (username) {
+    <div>
+      @if (userId) {
+        <a [routerLink]="['/profile', userId]" style="text-decoration: none; color: black;">{{ username }}</a>
+      } @else {
+        <span>{{ username }}</span>
+      }
+      <span style="margin: 0 8px;">|</span>
+      <a (click)="logout()" style="cursor: pointer; color: black;">logout</a>
+    </div>
+  }
 </nav>
-
 <router-outlet />
