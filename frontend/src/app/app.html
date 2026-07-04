@@ -2,13 +2,24 @@
   <a href="/feed" style="text-decoration: none; color: black;"><strong>01Blog</strong></a>
   @if (username) {
     <div>
+      <a routerLink="/notifications" style="text-decoration: none; color: black;">
+        Notif @if (unreadCount > 0) { <span>({{ unreadCount }})</span> }
+      </a>
+      <span style="margin: 0 8px;">|</span>
       @if (userId) {
         <a [routerLink]="['/profile', userId]" style="text-decoration: none; color: black;">{{ username }}</a>
       } @else {
         <span>{{ username }}</span>
       }
+
+      <span style="margin: 0 8px;">|</span>
+      @if (isAdmin()) {
+      <a routerLink="/admin" style="text-decoration: none; color: black;">Admin panel</a>
+      }
+
       <span style="margin: 0 8px;">|</span>
       <a (click)="logout()" style="cursor: pointer; color: black;">logout</a>
+
     </div>
   }
 </nav>

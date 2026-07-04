@@ -1,1 +1,17 @@
-<p>notifications-page works!</p>
+<div style="max-width: 600px; margin: 40px auto; font-family: monospace;">
+  <h2>Notifications</h2>
+  <hr>
+
+  @for (n of notifications; track n.id) {
+    <div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ccc;">
+      <a [routerLink]="['/profile', n.post.author.id]" style="color: black;">
+        <strong>{{ n.post.author.username }}</strong>
+      </a>
+      posted: {{ n.post.description }}
+    </div>
+  }
+
+  @if (notifications.length === 0) {
+    <p>No notifications.</p>
+  }
+</div>

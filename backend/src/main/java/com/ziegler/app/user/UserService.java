@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("Invalid password");
         }
 
-        return jwtService.generateToken(user.getUsername());
+        return jwtService.generateToken(user.getUsername(), user.getRole().name());
     }
 
     @Override
@@ -59,6 +59,9 @@ public class UserService implements UserDetailsService {
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        System.out.println("Loading user: " + username + " role: " + user.getRole());
+        System.out.println("Authorities: " + List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),

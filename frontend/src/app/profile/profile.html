@@ -5,6 +5,19 @@
     <button (click)="toggleSubscription()" style="cursor: pointer;">
       {{ isSubscribed ? 'Unsubscribe' : 'Subscribe' }}
     </button>
+    <button (click)="showReportForm = !showReportForm" style="cursor: pointer; margin-left: 8px;">Report</button>
+
+    @if (showReportForm) {
+      <div style="margin-top: 10px;">
+        <textarea [(ngModel)]="reportReason" rows="3" placeholder="Reason for report..." style="width: 100%;"></textarea><br>
+        <button (click)="submitReport()" style="cursor: pointer;">Submit Report</button>
+        <button (click)="showReportForm = false" style="cursor: pointer; margin-left: 8px;">Cancel</button>
+      </div>
+    }
+
+    @if (reportSuccess) {
+      <p style="color: green;">Report submitted.</p>
+    }
   }
 
   <hr>

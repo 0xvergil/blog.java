@@ -89,4 +89,12 @@ export class PostService {
   getFeed() {
     return this.http.get<any[]>(`${this.baseUrl}/feed`, { headers: this.getHeaders() });
   }
+
+  reportUser(userId: number, reason: string) {
+    return this.http.post(
+      `http://localhost:8080/reports/${userId}`,
+      { reason },
+      { headers: this.getHeaders(), responseType: 'text' as 'json' },
+    );
+  }
 }
