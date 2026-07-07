@@ -1,11 +1,11 @@
-<div style="max-width: 600px; margin: 40px auto; font-family: monospace;">
+<div class="container py-4" style="max-width: 600px">
   <h2>Notifications</h2>
-  <hr>
+  <hr />
 
   @for (n of notifications; track n.id) {
-    <div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ccc;">
-      <a [routerLink]="['/profile', n.post.author.id]" style="color: black;">
-        <strong>{{ n.post.author.username }}</strong>
+    <div class="mb-3 pb-3 border-bottom">
+      <a [routerLink]="['/profile', n.post.author.id]" class="fw-bold text-decoration-none">
+        {{ n.post.author.username }}
       </a>
       posted: {{ n.post.description }}
     </div>

@@ -1,61 +1,74 @@
-<div class="page-container">
+<div class="container py-4" style="max-width: 600px">
   @if (!isOwnProfile) {
-    <button (click)="toggleSubscription()">
-      {{ isSubscribed ? 'Unsubscribe' : 'Subscribe' }}
-    </button>
-    <button (click)="showReportForm = !showReportForm" style="margin-left: 8px">Report</button>
+    <div class="mb-3">
+      <button class="btn btn-outline-secondary btn-sm" (click)="toggleSubscription()">
+        {{ isSubscribed ? 'Unsubscribe' : 'Subscribe' }}
+      </button>
+      <button class="btn btn-outline-danger btn-sm ms-2" (click)="showReportForm = !showReportForm">
+        Report
+      </button>
+    </div>
 
     @if (showReportForm) {
-      <div style="margin-top: 10px">
+      <div class="mb-3">
         <textarea
+          class="form-control mb-2"
           [(ngModel)]="reportReason"
           rows="3"
           placeholder="Reason for report..."
-          style="width: 100%"
-        ></textarea
-        ><br />
-        <button (click)="submitReport()">Submit Report</button>
-        <button (click)="showReportForm = false" style="margin-left: 8px">Cancel</button>
+        ></textarea>
+        <button class="btn btn-outline-danger btn-sm" (click)="submitReport()">
+          Submit Report
+        </button>
+        <button class="btn btn-outline-secondary btn-sm ms-2" (click)="showReportForm = false">
+          Cancel
+        </button>
       </div>
     }
 
     @if (reportSuccess) {
-      <p style="color: green">Report submitted.</p>
+      <p class="text-success">Report submitted.</p>
     }
   }
 
   <hr />
 
   @for (post of posts; track post.id) {
-    <div class="post">
+    <div class="mb-4 pb-3 border-bottom">
       <strong>{{ post.author.username }}</strong>
 
       @if (editingPostId === post.id) {
-        <div>
-          <textarea [(ngModel)]="editDescription" rows="3" style="width: 100%"></textarea><br />
-          <button (click)="saveEdit(post)">Save</button>
-          <button (click)="cancelEdit()" style="margin-left: 8px">Cancel</button>
+        <div class="mt-2">
+          <textarea class="form-control mb-2" [(ngModel)]="editDescription" rows="3"></textarea>
+          <button class="btn btn-outline-secondary btn-sm" (click)="saveEdit(post)">Save</button>
+          <button class="btn btn-outline-secondary btn-sm ms-2" (click)="cancelEdit()">
+            Cancel
+          </button>
         </div>
       } @else {
-        <p>{{ post.description }}</p>
+        <p class="mt-1">{{ post.description }}</p>
       }
 
       @if (post.mediaUrl) {
-        <img [src]="'http://localhost:8080' + post.mediaUrl" class="post-media" />
+        <img
+          [src]="'http://localhost:8080' + post.mediaUrl"
+          class="img-fluid mb-2"
+          style="max-height: 300px; object-fit: contain"
+        />
       }
 
       @if (isOwnProfile) {
-        <div style="margin-top: 8px">
+        <div class="mb-2">
           @if (editingPostId !== post.id) {
-            <button (click)="startEdit(post)">Edit</button>
+            <button class="btn btn-outline-secondary btn-sm" (click)="startEdit(post)">Edit</button>
           }
-          <button (click)="deletePost(post.id)" style="margin-left: 8px">Delete</button>
+          <button class="btn btn-outline-danger btn-sm ms-2" (click)="deletePost(post.id)">
+            Delete
+          </button>
         </div>
       }
 
-      <div class="post-actions">
-        <span>♥ {{ post.likeCount }}</span>
-      </div>
+      <span class="text-secondary small">♥ {{ post.likeCount }}</span>
     </div>
   }
 
