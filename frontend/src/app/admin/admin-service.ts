@@ -3,13 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminService {
-
   private baseUrl = 'http://localhost:8080/admin';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   private getHeaders() {
     const token = this.authService.getToken();
@@ -28,6 +30,9 @@ export class AdminService {
     return this.http.get<any[]>(`${this.baseUrl}/reports`, { headers: this.getHeaders() });
   }
 
+  getAllPosts() {
+    return this.http.get<any[]>(`http://localhost:8080/posts/all`, { headers: this.getHeaders() });
+  }
   deletePost(postId: number) {
     return this.http.delete(`${this.baseUrl}/posts/${postId}`, { headers: this.getHeaders() });
   }

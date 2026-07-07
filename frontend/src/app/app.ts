@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { NotificationService } from './notifications/notification';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +13,13 @@ export class App implements OnInit {
   username: string | null = null;
   userId: string | null = null;
   unreadCount: number = 0;
+  isAdmin: boolean = false;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -25,7 +27,10 @@ export class App implements OnInit {
       if (event instanceof NavigationEnd) {
         this.username = this.authService.getUsername();
         this.userId = this.authService.getSavedUserId();
-        if (this.authService.isLoggedIn()) {
+        const token = this.authService.getToken();
+        if (token) {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          this.isAdmin = payload.role === 'ADMIN';
           this.notificationService.getUnreadCount().subscribe({
             next: (count) => (this.unreadCount = count),
           });
@@ -36,12 +41,6 @@ export class App implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    window.location.replace('/');
   }
-  isAdmin(): boolean {
-  const token = this.authService.getToken();
-  if (!token) return false;
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  return payload.role === 'ADMIN';
-}
 }

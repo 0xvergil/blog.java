@@ -1,23 +1,36 @@
-<div style="max-width: 800px; margin: 40px auto; font-family: monospace;">
+<div class="page-container">
   <h2>Admin Panel</h2>
-  <hr>
+  <hr />
 
   <h3>Users</h3>
   @for (user of users; track user.id) {
-    <div style="margin-bottom: 8px; border-bottom: 1px solid #ccc; padding-bottom: 8px;">
+    <div class="post">
       <strong>{{ user.username }}</strong> — {{ user.role }}
       @if (user.role !== 'ADMIN') {
-        <button (click)="deleteUser(user.id)" style="cursor: pointer; margin-left: 8px;">Delete</button>
+        <button (click)="deleteUser(user.id)" style="margin-left: 8px">Delete</button>
       }
     </div>
   }
 
-  <hr>
+  <hr />
+
+  <h3>Posts</h3>
+  @for (post of posts; track post.id) {
+    <div class="post">
+      <strong>{{ post.author.username }}</strong
+      >: {{ post.description }}
+      <button (click)="deletePost(post.id)" style="margin-left: 8px">Delete</button>
+    </div>
+  }
+
+  <hr />
 
   <h3>Reports</h3>
   @for (report of reports; track report.id) {
-    <div style="margin-bottom: 8px; border-bottom: 1px solid #ccc; padding-bottom: 8px;">
-      <strong>{{ report.reporter.username }}</strong> reported <strong>{{ report.reported.username }}</strong>: {{ report.reason }}
+    <div class="post">
+      <strong>{{ report.reporter.username }}</strong> reported
+      <strong>{{ report.reported.username }}</strong
+      >: {{ report.reason }}
     </div>
   }
 

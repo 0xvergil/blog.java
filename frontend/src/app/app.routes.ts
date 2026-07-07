@@ -11,6 +11,8 @@ import { adminGuard } from './admin/admin-guard';
 import { guestGuard } from './auth/guest-guard';
 
 export const routes: Routes = [
+  { path: 'login', component: Login, canActivate: [guestGuard] },
+  { path: 'register', component: Register, canActivate: [guestGuard] },
   { path: 'feed', component: Feed, canActivate: [authGuard] },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'create-post', component: CreatePost, canActivate: [authGuard] },
@@ -18,6 +20,4 @@ export const routes: Routes = [
   { path: 'notifications', component: NotificationsPage, canActivate: [authGuard] },
   { path: 'admin', component: Admin, canActivate: [adminGuard] },
   { path: '**', redirectTo: 'feed' },
-  { path: 'login', component: Login, canActivate: [guestGuard] },
-  { path: 'register', component: Register, canActivate: [guestGuard] },
 ];

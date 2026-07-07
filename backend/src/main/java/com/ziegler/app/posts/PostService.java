@@ -56,4 +56,14 @@ public class PostService {
     public List<Post> getAllPosts() {
         return postRepository.findAll();
     }
+
+    public Post updatePost(Long postId, String username, String description) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        if (!post.getAuthor().getUsername().equals(username)) {
+            throw new RuntimeException("You cannot edit this post");
+        }
+        post.setDescription(description);
+        return postRepository.save(post);
+    }
 }

@@ -1,12 +1,18 @@
-<div style="max-width: 300px; margin: 100px auto; font-family: monospace;">
+<div style="max-width: 300px; margin: 100px auto; font-family: monospace">
   <h2>01Blog — Login</h2>
-  <hr>
+  <hr />
 
-  <label>Username</label><br>
-  <input type="text" [(ngModel)]="username" style="width: 100%; margin-bottom: 10px;"><br>
+  <label>Username</label><br />
+  <input
+    type="text"
+    autofocus
+    [(ngModel)]="username"
+    (keyup.enter)="login()"
+    style="width: 100%; margin-bottom: 10px"
+  /><br />
 
-  <label>Password</label><br>
-  <input type="password" [(ngModel)]="password" style="width: 100%; margin-bottom: 10px;"><br>
+  <label>Password</label><br />
+  <input type="password" [(ngModel)]="password" style="width: 100%; margin-bottom: 10px" /><br />
 
   <button (click)="login()">Login</button>
 

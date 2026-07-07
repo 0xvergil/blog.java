@@ -97,4 +97,12 @@ export class PostService {
       { headers: this.getHeaders(), responseType: 'text' as 'json' },
     );
   }
+
+  updatePost(postId: number, description: string) {
+    const formData = new FormData();
+    formData.append('description', description);
+    return this.http.put<any>(`${this.baseUrl}/${postId}`, formData, {
+      headers: this.getHeaders(),
+    });
+  }
 }

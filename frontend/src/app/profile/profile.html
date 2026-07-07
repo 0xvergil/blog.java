@@ -1,35 +1,59 @@
-<div style="max-width: 600px; margin: 40px auto; font-family: monospace;">
-  <h2>User Profile</h2>
-
+<div class="page-container">
   @if (!isOwnProfile) {
-    <button (click)="toggleSubscription()" style="cursor: pointer;">
+    <button (click)="toggleSubscription()">
       {{ isSubscribed ? 'Unsubscribe' : 'Subscribe' }}
     </button>
-    <button (click)="showReportForm = !showReportForm" style="cursor: pointer; margin-left: 8px;">Report</button>
+    <button (click)="showReportForm = !showReportForm" style="margin-left: 8px">Report</button>
 
     @if (showReportForm) {
-      <div style="margin-top: 10px;">
-        <textarea [(ngModel)]="reportReason" rows="3" placeholder="Reason for report..." style="width: 100%;"></textarea><br>
-        <button (click)="submitReport()" style="cursor: pointer;">Submit Report</button>
-        <button (click)="showReportForm = false" style="cursor: pointer; margin-left: 8px;">Cancel</button>
+      <div style="margin-top: 10px">
+        <textarea
+          [(ngModel)]="reportReason"
+          rows="3"
+          placeholder="Reason for report..."
+          style="width: 100%"
+        ></textarea
+        ><br />
+        <button (click)="submitReport()">Submit Report</button>
+        <button (click)="showReportForm = false" style="margin-left: 8px">Cancel</button>
       </div>
     }
 
     @if (reportSuccess) {
-      <p style="color: green;">Report submitted.</p>
+      <p style="color: green">Report submitted.</p>
     }
   }
 
-  <hr>
+  <hr />
 
   @for (post of posts; track post.id) {
-    <div style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+    <div class="post">
       <strong>{{ post.author.username }}</strong>
-      <p>{{ post.description }}</p>
-      @if (post.mediaUrl) {
-        <img [src]="'http://localhost:8080' + post.mediaUrl" style="max-width: 100%; max-height: 400px; object-fit: contain;">
+
+      @if (editingPostId === post.id) {
+        <div>
+          <textarea [(ngModel)]="editDescription" rows="3" style="width: 100%"></textarea><br />
+          <button (click)="saveEdit(post)">Save</button>
+          <button (click)="cancelEdit()" style="margin-left: 8px">Cancel</button>
+        </div>
+      } @else {
+        <p>{{ post.description }}</p>
       }
-      <div style="margin-top: 8px;">
+
+      @if (post.mediaUrl) {
+        <img [src]="'http://localhost:8080' + post.mediaUrl" class="post-media" />
+      }
+
+      @if (isOwnProfile) {
+        <div style="margin-top: 8px">
+          @if (editingPostId !== post.id) {
+            <button (click)="startEdit(post)">Edit</button>
+          }
+          <button (click)="deletePost(post.id)" style="margin-left: 8px">Delete</button>
+        </div>
+      }
+
+      <div class="post-actions">
         <span>♥ {{ post.likeCount }}</span>
       </div>
     </div>

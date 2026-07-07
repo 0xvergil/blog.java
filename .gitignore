@@ -42,3 +42,4 @@ build/
 
 #adds
 backend/uploads/
+.todo

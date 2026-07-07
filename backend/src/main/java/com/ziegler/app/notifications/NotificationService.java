@@ -25,9 +25,11 @@ public class NotificationService {
 
    public void notifyFollowers(Post post) {
       User author = post.getAuthor();
-      subscriptionRepository.findAllByFollower(author).forEach(sub -> {
-         Notification notification = new Notification(sub.getFollower(), post);
-         notificationRepository.save(notification);
+      subscriptionRepository.findAllByFollowing(author).forEach(sub -> {
+         if (!sub.getFollower().getId().equals(author.getId())) {
+            Notification notification = new Notification(sub.getFollower(), post);
+            notificationRepository.save(notification);
+         }
       });
    }
 

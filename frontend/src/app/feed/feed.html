@@ -1,29 +1,42 @@
-<div style="max-width: 600px; margin: 40px auto; font-family: monospace;">
+<div class="container py-4" style="max-width: 600px">
   <h2>01Blog — Feed</h2>
-  <hr>
-  <a href="/create-post" style="color:gray">+ New Post</a>
-  <hr>
+  <hr />
+  <a href="/create-post" class="text-secondary">+ New Post</a>
+  <hr />
 
   @for (post of posts; track post.id) {
-    <div style="margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
-      <a [routerLink]="['/profile', post.author.id]" style="color: black; font-weight: bold; text-decoration: none;">{{ post.author.username }}</a>
-      <p>{{ post.description }}</p>
+    <div class="mb-4 pb-3 border-bottom">
+      <a [routerLink]="['/profile', post.author.id]" class="fw-bold text-decoration-none">
+        {{ post.author.username }}
+      </a>
+      <p class="mt-2">{{ post.description }}</p>
       @if (post.mediaUrl) {
-        <img [src]="'http://localhost:8080' + post.mediaUrl" style="max-width: 100%; max-height: 300px; object-fit: contain;">
+        <img
+          [src]="'http://localhost:8080' + post.mediaUrl"
+          class="img-fluid"
+          style="max-height: 300px; object-fit: contain"
+        />
       }
-
-      <div style="margin-top: 8px;">
-        <button (click)="toggleLike(post)" style="cursor: pointer;">♥ {{ post.likeCount }}</button>
+      <div class="mt-2">
+        <button class="btn btn-sm btn-outline-secondary" (click)="toggleLike(post)">
+          ♥ {{ post.likeCount }}
+        </button>
       </div>
-
-      <div style="margin-top: 8px;">
+      <div class="mt-2">
         @for (comment of post.comments; track comment.id) {
-          <div style="margin: 4px 0; font-size: 0.9em;">
-            <strong>{{ comment.user.username }}</strong>: {{ comment.content }}
+          <div class="small mb-1">
+            <strong>{{ comment.user.username }}</strong
+            >: {{ comment.content }}
           </div>
         }
-        <input [(ngModel)]="commentInputs[post.id]" placeholder="Add a comment..." style="width: 70%; margin-top: 4px;">
-        <button (click)="addComment(post)" style="cursor: pointer;">Post</button>
+        <div class="input-group mt-2" style="max-width: 400px">
+          <input
+            [(ngModel)]="commentInputs[post.id]"
+            class="form-control form-control-sm"
+            placeholder="Add a comment..."
+          />
+          <button class="btn btn-sm btn-outline-secondary" (click)="addComment(post)">Post</button>
+        </div>
       </div>
     </div>
   }

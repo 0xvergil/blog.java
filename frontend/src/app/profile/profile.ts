@@ -74,4 +74,37 @@ export class Profile implements OnInit {
     if (!dateStr) return '';
     return new Date(dateStr).toLocaleString();
   }
+
+  // post editing
+  editingPostId: number | null = null;
+  editDescription: string = '';
+
+  startEdit(post: any) {
+    this.editingPostId = post.id;
+    this.editDescription = post.description;
+  }
+
+  saveEdit(post: any) {
+    this.postService.updatePost(post.id, this.editDescription).subscribe({
+      next: (updated) => {
+        post.description = updated.description;
+        this.editingPostId = null;
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  cancelEdit() {
+    this.editingPostId = null;
+  }
+
+  deletePost(postId: number) {
+    if (!confirm('Delete this post?')) return;
+    this.postService.deletePost(postId).subscribe({
+      next: () => {
+        this.posts = this.posts.filter((p) => p.id !== postId);
+        this.cdr.detectChanges();
+      },
+    });
+  }
 }
