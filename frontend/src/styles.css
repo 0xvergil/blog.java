@@ -41,11 +41,6 @@ nav {
   border-bottom: 1px solid #333333 !important;
 }
 
-.page-container {
-  max-width: 600px;
-  margin: 40px auto;
-}
-
 .post {
   margin-bottom: 20px;
   border-bottom: 1px solid #333333;

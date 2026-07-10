@@ -9,6 +9,7 @@
       <a [routerLink]="['/profile', post.author.id]" class="fw-bold text-decoration-none">
         {{ post.author.username }}
       </a>
+      <span class="text-secondary small ms-2">{{ formatDate(post.createdAt) }}</span>
       <p class="mt-2">{{ post.description }}</p>
       @if (post.mediaUrl) {
         <img

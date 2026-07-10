@@ -36,6 +36,7 @@
   @for (post of posts; track post.id) {
     <div class="mb-4 pb-3 border-bottom">
       <strong>{{ post.author.username }}</strong>
+      <span class="text-secondary small ms-2">{{ formatDate(post.createdAt) }}</span>
 
       @if (editingPostId === post.id) {
         <div class="mt-2">

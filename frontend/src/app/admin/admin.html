@@ -1,13 +1,15 @@
-<div class="page-container">
+<div class="container py-4" style="max-width: 800px">
   <h2>Admin Panel</h2>
   <hr />
 
   <h3>Users</h3>
   @for (user of users; track user.id) {
-    <div class="post">
-      <strong>{{ user.username }}</strong> — {{ user.role }}
+    <div class="mb-2 pb-2 border-bottom d-flex justify-content-between align-items-center">
+      <span
+        ><strong>{{ user.username }}</strong> — {{ user.role }}</span
+      >
       @if (user.role !== 'ADMIN') {
-        <button (click)="deleteUser(user.id)" style="margin-left: 8px">Delete</button>
+        <button class="btn btn-outline-danger btn-sm" (click)="deleteUser(user.id)">Delete</button>
       }
     </div>
   }
@@ -16,10 +18,12 @@
 
   <h3>Posts</h3>
   @for (post of posts; track post.id) {
-    <div class="post">
-      <strong>{{ post.author.username }}</strong
-      >: {{ post.description }}
-      <button (click)="deletePost(post.id)" style="margin-left: 8px">Delete</button>
+    <div class="mb-2 pb-2 border-bottom d-flex justify-content-between align-items-center">
+      <span
+        ><strong>{{ post.author.username }}</strong
+        >: {{ post.description }}</span
+      >
+      <button class="btn btn-outline-danger btn-sm" (click)="deletePost(post.id)">Delete</button>
     </div>
   }
 
@@ -27,9 +31,8 @@
 
   <h3>Reports</h3>
   @for (report of reports; track report.id) {
-    <div class="post">
-      <strong>{{ report.reporter.username }}</strong> reported
-      <strong>{{ report.reported.username }}</strong
+    <div class="mb-2 pb-2 border-bottom">
+      <strong>{{ report.reporter }}</strong> reported <strong>{{ report.reported }}</strong
       >: {{ report.reason }}
     </div>
   }
