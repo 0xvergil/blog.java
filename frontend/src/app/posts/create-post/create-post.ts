@@ -14,11 +14,21 @@ export class CreatePost {
   file: File | null = null;
   error = '';
   success = false;
+  previewUrl: string | null = null;
+  isVideo = false;
 
   constructor(private postService: PostService) {}
 
   onFileSelected(event: any) {
     this.file = event.target.files[0];
+    if (this.file) {
+      this.isVideo = this.file.type.startsWith('video/');
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewUrl = e.target.result;
+      };
+      reader.readAsDataURL(this.file);
+    }
   }
 
   submit() {
@@ -26,11 +36,11 @@ export class CreatePost {
       this.error = 'Description is required';
       return;
     }
-
     this.postService.createPost(this.description, this.file ?? undefined).subscribe({
       next: () => {
         this.success = true;
         this.error = '';
+        this.previewUrl = null;
       },
       error: () => {
         this.error = 'Failed to create post';

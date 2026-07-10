@@ -60,6 +60,7 @@ export class Profile implements OnInit {
 
   submitReport() {
     if (!this.reportReason.trim()) return;
+    if (!confirm('Are you sure you want to report this user?')) return;
     this.postService.reportUser(this.userId, this.reportReason).subscribe({
       next: () => {
         this.reportSuccess = true;
